@@ -10,7 +10,7 @@
 using namespace std;
 
 int N, M, K;
-bool DEBUG;
+bool DEBUG = false;
 
 vector<int> incoming[MAX_M];
 vector<int> outcoming[MAX_M];
@@ -23,7 +23,7 @@ vector<long long> sorted_prj;
 void read_input() {
     int left, right;
     scanf("%d%d%d", &N, &M, &K);
-    for (int i = 0; i < N; i++) {
+    for (int i = 1; i <= N; i++) {
         scanf("%lld", &pro_needed[i]);
         pro_needed_with_prj.push_back(make_pair(pro_needed[i], i));
     }
@@ -40,20 +40,21 @@ void visit(int node) {
             visit(m);
         }
         is_visited[node] = 1;
-        not_visited.erase(node);
+        //not_visited.erase(node);
         sorted_prj.push_back(pro_needed[node]);
     }
 }
 
 void topo_sort() {
-    sort(pro_needed_with_prj.begin(), pro_needed_with_prj.end());
-    for (int i = 1; i <= N; i++) {
-        not_visited.insert(pro_needed_with_prj[i].second);
+    sort(pro_needed_with_prj.rbegin(), pro_needed_with_prj.rend());
+    for (int i = 0; i < N; i++) {
+        visit(pro_needed_with_prj[i].second);
     }
-    while (!not_visited.empty()) {
-        visit(*(not_visited.begin()));
+    if (DEBUG) {
+        cout << "Dd";
     }
-    reverse(sorted_prj.begin(), sorted_prj.end());
+
+    //reverse(sorted_prj.begin(), sorted_prj.end());
 }
 
 /*void topo_sort() {
